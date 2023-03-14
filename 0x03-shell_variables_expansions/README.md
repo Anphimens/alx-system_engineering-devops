@@ -1,1 +1,1 @@
-This is a read me file for shell variables expansions
+This is my read me file for shell variables expansions
