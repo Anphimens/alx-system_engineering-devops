@@ -1,0 +1,2 @@
+# Regular expression
+Regular expressions (regrex or regexp) are sequences of characters that define a search pattern, usually for pattern matching within strings. They are widely used in programming, text processing, and datat validation tasks.
