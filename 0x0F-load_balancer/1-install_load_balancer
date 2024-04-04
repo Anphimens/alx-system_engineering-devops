@@ -3,7 +3,7 @@
 # Add HAProxy PPA
 sudo apt-get -y install software-properties-common
 sudo add-apt-repository -y ppa:vbernat/haproxy-2.5
-sudo apt-get -y ipdate
+sudo apt-get -y update
 
 echo "ENABLED=1" >> /etc/default/haproxy
 mv /etc/haproxy/haproxy.cfg{,.original}
@@ -24,7 +24,7 @@ defaults
   timeout connect 5000
   timeout client 10000
   timeout server 10000
-listen hbnb
+listen my_custom_listener
   bind 0.0.0.0:80
   mode http
   stats enable
