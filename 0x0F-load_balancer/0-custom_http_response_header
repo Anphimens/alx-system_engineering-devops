@@ -4,12 +4,6 @@
 # the name of the custom HTTP must be ` X-Served-By` and the value of the
 # custom HTTP header is the hostname of the server Nginx is running on
 
-# Check if the script is being run as root
-if [ "$EUID" -NE 0]; then
- echo "You need root priviledges to run this script."
- exit 1
-fi
-
 # update packages
 apt-get update
 
@@ -17,10 +11,29 @@ apt-get update
 apt-get install -y nginx
 
 # create directory if not exist
-mkdir -p /etc/nginx/conf.d
+mkdir -p /var/www/html
+touch /var/www/html/index.html
+echo "Best school" > /var/www/html/index.html
+touch /var/www/html/404.html
+echo "Page not avaialable" > /var/www/html/404.html
 
-# Create a custom HTP response header
-echo "add_header X-Served-By $HOSTNAME;" > /etc/nginx/conf.d/custom_http_response_header
+printf %s "server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+	add_header X-Served-By $HOSTNAME;
+	root	/var/www/html
+	index	index.html index.htm;
+
+	location /redirect_me {
+		return 301 http://cuberule.com/;
+	}
+
+	error_page 404 /404.html;
+	location /404 {
+	  root /var/www/html
+	  internal;
+  }
+}" > /etc/nginx/sites-available/default
 
 # Restart nginx
 service nginx restart
