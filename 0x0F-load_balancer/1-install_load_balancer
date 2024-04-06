@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
-
 # Update package repository and install necessary tools
+# Add HAProxy PPA repository
 apt-get update
 apt-get install -y software-properties-common
-
-# Add HAProxy PPA repository
 add-apt-repository -y ppa:vbernat/haproxy-2.5
 
 # Update repository information again after adding PPA
