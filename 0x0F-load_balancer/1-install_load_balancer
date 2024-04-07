@@ -1,16 +1,34 @@
 #!/usr/bin/env bash
+<<<<<<< HEAD
 #Installs and configures HAproxy in a load balancer server
 
+=======
+# Add HAProxy PPA
+apt-get update
+>>>>>>> 3fde03b34313ac2d75d0e27ae970094e07df220e
 apt-get install -y software-properties-common
 add-apt-repository -y ppa:vbernat/haproxy-2.5
 apt-get update
 apt-get install -y haproxy
 
+<<<<<<< HEAD
+=======
+# Enable HAProxy
+>>>>>>> 3fde03b34313ac2d75d0e27ae970094e07df220e
 echo "ENABLED=1" >> /etc/default/haproxy
 mv /etc/haproxy/haproxy.cfg{,.original}
 touch /etc/haproxy/haproxy.cfg
 
+<<<<<<< HEAD
 printf %s "global
+=======
+# Backup existing HAProxy configuration
+mv /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.original
+
+# Create a new HAProxy configuration file
+cat <<EOF > /etc/haproxy/haproxy.cfg
+global
+>>>>>>> 3fde03b34313ac2d75d0e27ae970094e07df220e
     log 127.0.0.1 local0 notice
     maxconn 2000
     user haproxy
@@ -21,20 +39,41 @@ defaults
     option  httplog
     option  dontlognull
     retries 3
+<<<<<<< HEAD
     option redispatch
     timeout connect  5000
     timeout client  10000
     timeout server  10000
 listen hbnb
+=======
+    timeout connect 5000
+    timeout client 10000
+    timeout server 10000
+
+frontend memaame_frontend
+>>>>>>> 3fde03b34313ac2d75d0e27ae970094e07df220e
     bind 0.0.0.0:80
     mode http
-    stats enable
-    stats uri /haproxy?stats
+    default_backend memaame_backend
+
+backend memaame_backend
     balance roundrobin
     option httpclose
     option forwardfor
+<<<<<<< HEAD
     server 310219-web-01 54.87.242.205:80 check
     server 310219-web-02 100.26.212.66:80 check
 " >> /etc/haproxy/haproxy.cfg
+=======
+    server 310219-web-01 310219-54.87.242.205:80 check
+    server 310219-web-02 310219-100.26.212.66:80 check
+EOF
+
+# Start HAProxy service
+systemctl start haproxy
+
+# Enable HAProxy to start on boot
+systemctl enable haproxy
+>>>>>>> 3fde03b34313ac2d75d0e27ae970094e07df220e
 
 service haproxy start
