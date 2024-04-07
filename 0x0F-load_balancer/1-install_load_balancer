@@ -32,18 +32,22 @@ defaults
     timeout client 10000
     timeout server 10000
 
-listen my_custom_listener
+frontend memaame_frontend
     bind 0.0.0.0:80
     mode http
-    stats enable
-    stats uri /haproxy?stats
+    default_backend memaame_backend
+
+backend memaame_backend
     balance roundrobin
     option httpclose
     option forwardfor
-    server 310219-web-01 54.87.242.205:80 check
-    server 310219-web-02 100.26.212.66:80 check
+    server 310219-web-01 310219-54.87.242.205:80 check
+    server 310219-web-02 310219-100.26.212.66:80 check
 EOF
 
 # Start HAProxy service
 systemctl start haproxy
+
+# Enable HAProxy to start on boot
+systemctl enable haproxy
 
